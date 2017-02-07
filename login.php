@@ -1,30 +1,34 @@
 <?php
-// inclusion du fichier contenant les fonctions générales
-include('fonction.inc');
+$db = mysql_connect('localhost', 'root', ''); 
+mysql_select_db('test_session',$db);    
 
-// fonctionqui vérifie si l'identification est correcte
-function utilisateur_existe($identifiant,$mot_de_passe)
-{
-	return(bool) rand(0,1);
+if(isset($_POST) && !empty($_POST['login']) && !empty($_POST['pass'])) {
+  extract($_POST);
+  // on recupère le password de la table qui correspond au login du visiteur
+  $sql = "select pwd from tbl_user where login='".$login."'";
+  $req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
+
+  $data = mysql_fetch_assoc($req);
+
+  if($data['pwd'] != $pass) {
+    echo '<p>Mauvais login / password. Merci de recommencer</p>';
+    include('login.htm'); // On inclut le formulaire d'identification
+    exit;
+  }
+  else {
+    session_start();
+    $_SESSION['login'] = $login;
+    
+    echo 'Vous etes bien logué';
+    // ici vous pouvez afficher un lien pour renvoyer
+    // vers la page d'accueil de votre espace membres 
+  }    
+}
+else {
+  echo '<p>Vous avez oublié de remplir un champ.</p>';
+   include('login.htm'); // On inclut le formulaire d'identification
+   exit;
 }
 
-// Initialisation des données
-if (isset($_POST['connexion']))
-{
-	$identifiant = valeur_saisie($_POST['identifiant']);
-	$mot_de_passe = valeur_saisie($_POST['mot_de_passe']);
-	
-	// vérification si l'utilisateur existe
-	if (utilisateur_existe($identifiant,$mot_de_passe))
-	{
-		header('location:accueil.php');
-		exit;
-	}
-	else
-	{
-		$message = 'Identification incorrecte. ';
-		$message = 'Essayez de nouveau ');
-	}
-}
+
 ?>
- 
