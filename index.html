@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<meta charset="utf-8" />
+	<title>test_session</title>
+	<head>
+	</head>
+	<body>
+		<form action="login.php"<+>method="post">
+		<table border ="0">
+		<tr>
+			<td align="right">identifiant :</td>
+			<td><input type="text" name="identifiant" value="<?php echo vers_formulaire($identifiant); ?>" /></td>
+		</tr>
+		<tr>
+			<td align="right">Mot de passe :</td>
+			<td><input type="password" name="Mot de passe" value ="<?php echo vers_formulaire($mot_de_passe); ?>" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td align="right" <input="submit" name="connexion" value="connexion" /></td>
+		</tr>
+		</table>
+		<?php echo $message; ?>
+		</form>
+	</body>
+</html>
+		
